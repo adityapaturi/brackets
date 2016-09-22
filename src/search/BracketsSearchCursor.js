@@ -350,6 +350,29 @@ define(function (require, exports, module) {
         }
         return true;
     };
+    /**
+     * Determines if the groupNum1 of this Array is a enclosed by groupNum2 of groupArray2
+     * @private
+     * @param   {GroupArray} groupNum1   Item within group array
+     * @param   {GroupArray} groupArray2 Second group array
+     * @param   {GroupArray} groupNum2   Item within groupArray2
+     * @return  {boolean}  true when the groupNum1 of this Array is a enclosed by groupNum2 of groupArray2
+     */
+    GroupArray.prototype.isGroupEnclosed = function (groupNum1, groupArray2, groupNum2) {
+        var groupSize = this.groupSize(),
+            group2Size = groupArray2.groupSize();
+
+        // This function is only valid for groups of size 2.
+        if (groupSize === 2 && group2Size === 2) {
+            if (_.gte(this.getGroupValue(groupNum1, 0), groupArray2.getGroupValue(groupNum2, 0)) &&
+                    _.lte(this.getGroupValue(groupNum1, 1), groupArray2.getGroupValue(groupNum2, 1))) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
     GroupArray.prototype.nextGroupIndex = function () {
         if (this._currentGroupIndex < this.array.length - this._groupSize) {
             this._currentGroupIndex += this._groupSize;
@@ -441,6 +464,9 @@ define(function (require, exports, module) {
         if (firstSearchResults.isGroupValuesEqual(0, secondSearchResults, secondSearchResults.itemCount() - 1)) {
             secondSearchResults.array.pop();
             secondSearchResults.array.pop();
+        } else if (firstSearchResults.isGroupEnclosed(0, secondSearchResults, secondSearchResults.itemCount() - 1)) {
+            firstSearchResults.shift();
+            firstSearchResults.shift();
         }
     }
 
