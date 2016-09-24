@@ -465,8 +465,8 @@ define(function (require, exports, module) {
             secondSearchResults.array.pop();
             secondSearchResults.array.pop();
         } else if (firstSearchResults.isGroupEnclosed(0, secondSearchResults, secondSearchResults.itemCount() - 1)) {
-            firstSearchResults.shift();
-            firstSearchResults.shift();
+            firstSearchResults.array.shift();
+            firstSearchResults.array.shift();
         }
     }
 
